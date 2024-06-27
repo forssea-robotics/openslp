@@ -246,9 +246,8 @@ SLPError SLPAPI SLPDereg(
    if (inuse)
       return SLP_HANDLE_IN_USE;
 
-   if (!scopes || *scopes == 0) {
+   if (!scopes || *scopes == 0)
       scopes = SLPPropertyGet("net.slp.useScopes", 0, 0);
-   }
 
    /* Set the handle up to reference parameters. */
    handle->params.dereg.scopelist = scopes;
