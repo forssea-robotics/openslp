@@ -251,7 +251,7 @@ typedef enum {
  *
  * The SLPBoolean enum is used as a boolean flag.
  */
-typedef enum {
+typedef enum SLPBoolean {
    SLP_FALSE = 0,
    SLP_TRUE  = 1
 } SLPBoolean;
