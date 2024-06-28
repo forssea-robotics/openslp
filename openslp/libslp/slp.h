@@ -470,6 +470,7 @@ SLPEXP SLPError SLPAPI SLPReg(
       unsigned short usLifetime, 
       const char *   pcSrvType,
       const char *   pcAttrs, 
+      const char *   pcScopeList,
       SLPBoolean     fresh, 
       SLPRegReport   callback,
       void *         pvCookie); 
@@ -480,6 +481,7 @@ SLPEXP SLPError SLPAPI SLPReg(
 SLPEXP SLPError SLPAPI SLPDereg(
       SLPHandle      hSLP, 
       const char *   pcSrvURL,
+      const char *   pcScopeList,
       SLPRegReport   callback, 
       void *         pvCookie);
 

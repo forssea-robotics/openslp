@@ -261,6 +261,7 @@ void Register(SLPToolCommandLine * cmdline)
    char srvtype[80] = "", * s;
    size_t len = 0;
    unsigned int lt = 0;
+   const char *scopes;
 
    if (cmdline->time) {
        lt = atoi(cmdline->time);
@@ -283,16 +284,18 @@ void Register(SLPToolCommandLine * cmdline)
    SLPSetProperty("net.slp.watchRegistrationPID", 0);
 
    if ((cmdline->scopes != 0) && (*cmdline->scopes != 0))
-      SLPSetProperty("net.slp.useScopes", cmdline->scopes);
+      scopes = cmdline->scopes;
+   else
+      scopes = "DEFAULT";
 
    if (SLPOpen(cmdline->lang, SLP_FALSE, &hslp) == SLP_OK)
    {
       if (!lt || lt > SLP_LIFETIME_MAXIMUM)
            result = SLPReg(hslp, cmdline->cmdparam1, SLP_LIFETIME_MAXIMUM, srvtype,
-                           cmdline->cmdparam2, SLP_TRUE, mySLPRegReport, 0);
+                           cmdline->cmdparam2, scopes, SLP_TRUE, mySLPRegReport, 0);
       else
            result = SLPReg(hslp, cmdline->cmdparam1, (unsigned short)lt, srvtype,
-                           cmdline->cmdparam2, SLP_TRUE, mySLPRegReport, 0);
+                           cmdline->cmdparam2, scopes, SLP_TRUE, mySLPRegReport, 0);
       if (result != SLP_OK)
          printf("errorcode: %i\n", result);
       SLPClose(hslp);
@@ -303,10 +306,16 @@ void Deregister(SLPToolCommandLine * cmdline)
 {
    SLPError result;
    SLPHandle hslp;
+   const char *scopes;
+
+   if ((cmdline->scopes != 0) && (*cmdline->scopes != 0))
+      scopes = cmdline->scopes;
+   else
+      scopes = "DEFAULT";
 
    if (SLPOpen(cmdline->lang, SLP_FALSE, &hslp) == SLP_OK)
    {
-      result = SLPDereg(hslp, cmdline->cmdparam1, mySLPRegReport, 0);
+      result = SLPDereg(hslp, cmdline->cmdparam1, scopes, mySLPRegReport, 0);
       if (result != SLP_OK)
          printf("errorcode: %i\n", result);
       SLPClose(hslp);

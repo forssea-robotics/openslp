@@ -315,6 +315,7 @@ SLPEXP SLPError SLPAPI SLPReg(
       unsigned short lifetime,
       const char * srvType,
       const char * attrList,
+      const char * pcScopeList,
       SLPBoolean fresh,
       SLPRegReport callback,
       void * cookie)
@@ -363,6 +364,9 @@ SLPEXP SLPError SLPAPI SLPReg(
       return serr == SLP_PARSE_ERROR? SLP_INVALID_REGISTRATION: serr;
    }
 
+   if (!pcScopeList || *pcScopeList == 0)
+      pcScopeList = SLPPropertyGet("net.slp.useScopes", 0, 0);
+
    /* Set the handle up to reference parameters. */
    handle->params.reg.fresh = fresh;
    handle->params.reg.lifetime = lifetime;
@@ -370,7 +374,7 @@ SLPEXP SLPError SLPAPI SLPReg(
    handle->params.reg.url = srvUrl;
    handle->params.reg.srvtype = parsedurl->s_pcSrvType;
    handle->params.reg.srvtypelen = strlen(handle->params.reg.srvtype);
-   handle->params.reg.scopelist = SLPPropertyGet("net.slp.useScopes", 0, 0);
+   handle->params.reg.scopelist = pcScopeList;
    handle->params.reg.scopelistlen = strlen(handle->params.reg.scopelist);
    handle->params.reg.attrlistlen = strlen(attrList);
    handle->params.reg.attrlist = attrList;

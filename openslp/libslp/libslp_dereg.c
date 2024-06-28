@@ -212,6 +212,7 @@ static SLPError AsyncProcessSrvDeReg(SLPHandleInfo * handle)
 SLPError SLPAPI SLPDereg(
       SLPHandle hSLP,
       const char * srvUrl,
+      const char * pcScopeList,
       SLPRegReport callback,
       void * cookie)
 {
@@ -244,8 +245,11 @@ SLPError SLPAPI SLPDereg(
    if (inuse)
       return SLP_HANDLE_IN_USE;
 
+   if (!pcScopeList || *pcScopeList == 0)
+      pcScopeList = SLPPropertyGet("net.slp.useScopes", 0, 0);
+
    /* Set the handle up to reference parameters. */
-   handle->params.dereg.scopelist = SLPPropertyGet("net.slp.useScopes", 0, 0);
+   handle->params.dereg.scopelist = pcScopeList;
    handle->params.dereg.scopelistlen = strlen(handle->params.dereg.scopelist);
    handle->params.dereg.urllen = strlen(srvUrl); 
    handle->params.dereg.url = srvUrl;
